@@ -54,14 +54,15 @@ const Payment = () => {
 
         console.log(result);
 
-        const { id, currency } = result.data.razorpayOrder;
+        const { id, currency } = result?.data?.razorpayOrder;
+        let _id;
         if (userDetails?.createPaymentPayload?.planName !== "Talk to Expert") {
-          const { _id } = result?.data?.createdOrder;
+          _id = result?.data?.createdOrder?._id;
         } else {
-          const _id = "";
+          _id = "";
         }
         const options = {
-          key: userDetails.isLive
+          key: userDetails?.isLive
             ? import.meta.env.VITE_RAZORPAY_LIVE_API_KEY
             : import.meta.env.VITE_RAZORPAY_TEST_API_KEY,
           //   amount: String(amount),
@@ -80,7 +81,7 @@ const Payment = () => {
             };
 
             console.log(response);
-
+            console.log("Rauhl Prajapati!!");
             const result = await axios.post(
               userDetails?.verifyPaymentURL,
               data
