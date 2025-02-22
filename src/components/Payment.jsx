@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPlan } from "../features/gpt/authSlice";
 import { NODE_API_ENDPOINT } from "../utils/utils";
 import axios from "axios";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Payment = () => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const userDetails = useSelector((state) => state?.auth?.plan);
   console.log(userDetails);
   console.log(userDetails?.homeSite);
@@ -121,7 +121,9 @@ const Payment = () => {
   };
 
   const clickHandler = () => {
-    // navigate("http://localhost:4000/");
+    if (userDetails?.homeSite) {
+      window.location.href = userDetails.homeSite; // External website navigation
+    }
   };
 
   return (
@@ -163,14 +165,12 @@ const Payment = () => {
           <div className="mt-6 flex flex-col gap-3">
             <button
               className="bg-[#055151] text-white font-semibold py-2 rounded-lg shadow-md hover:bg-[#033d3d] transition"
-              onClick={loadRazorpay}
-            >
+              onClick={loadRazorpay}>
               Proceed to Payment
             </button>
             <button
               className="bg-gray-300 text-gray-700 font-semibold py-2 rounded-lg hover:bg-gray-400 transition"
-              onClick={clickHandler}
-            >
+              onClick={clickHandler}>
               Go Back
             </button>
           </div>
@@ -191,8 +191,7 @@ const Payment = () => {
           </p>
           <button
             className="mt-5 bg-[#055151] text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-[#033d3d] transition"
-            onClick={clickHandler}
-          >
+            onClick={clickHandler}>
             Back to Home
           </button>
         </div>
