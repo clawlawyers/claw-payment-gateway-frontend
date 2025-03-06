@@ -114,7 +114,7 @@ const Payment = () => {
         setLoading(false);
         alert(error.message);
       } finally {
-        setPaymentVerified(true);
+        setPaymentVerified(false);
         setLoading(false);
       }
     };
@@ -166,12 +166,33 @@ const Payment = () => {
           <div className="mt-6 flex flex-col gap-3">
             <button
               className="bg-[#055151] text-white font-semibold py-2 rounded-lg shadow-md hover:bg-[#033d3d] transition"
-              onClick={loadRazorpay}>
-              Proceed to Payment
+              onClick={loadRazorpay}
+            >
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <svg
+                    className="animate-spin w-6 h-6 text-gray-700"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="3"
+                      cy="3"
+                      r="2"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    />
+                  </svg>
+                </div>
+              ) : (
+                "Pay Now"
+              )}
+              {/* Proceed to Payment */}
             </button>
             <button
               className="bg-gray-300 text-gray-700 font-semibold py-2 rounded-lg hover:bg-gray-400 transition"
-              onClick={clickHandler}>
+              onClick={clickHandler}
+            >
               Go Back
             </button>
           </div>
@@ -192,7 +213,8 @@ const Payment = () => {
           </p>
           <button
             className="mt-5 bg-[#055151] text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-[#033d3d] transition"
-            onClick={clickHandler}>
+            onClick={clickHandler}
+          >
             Back to Home
           </button>
         </div>
