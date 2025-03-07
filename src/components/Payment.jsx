@@ -32,6 +32,7 @@ const Payment = () => {
 
       // Dispatch the user data to Redux state
       dispatch(setPlan(sentUser));
+      window.history.replaceState({}, document.title, window.location.pathname);
     } else {
       alert("user details not found!");
     }
