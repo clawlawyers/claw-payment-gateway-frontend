@@ -11,9 +11,9 @@ const PaymentSuccess = () => {
         {/* Progress Bar */}
         <div className="flex items-center justify-center my-4 gap-0 w-full">
            <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-          <div className="w-60 h-[0.5px] bg-white"></div> {/* Increased width */}
+          <div className="w-60 h-[0.5px] bg-white"></div> 
            <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-            <div className="w-60 h-[0.5px] bg-white"></div> {/* Increased width */}
+            <div className="w-60 h-[0.5px] bg-white"></div> 
             <div className="w-4 h-4 bg-green-500 rounded-full"></div>
        </div>
 
@@ -33,10 +33,10 @@ const PaymentSuccess = () => {
     <span className="text-white font-bold">Thank You</span> for completing the purchase.<br />
     You will be soon redirected to the <span className="font-bold text-white">Home Page</span>.
   </p>
-</div>
+ </div>
 
-      </div>
-    </div>
+</div>
+</div>
   );
 };
 
