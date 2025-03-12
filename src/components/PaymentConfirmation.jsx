@@ -107,8 +107,7 @@ const PaymentConfirmation = () => {
               <span>Total Payable:</span>
               <span>₹ 4700</span>
             </div>
-          </div>
-          
+          </div>  
         </div>
         <div className="mt-6 text-center">
           <button className="bg-teal-600 px-6 py-3 rounded-md font-medium text-sm w-[330px]" onClick={handleProceedToPayment}>
