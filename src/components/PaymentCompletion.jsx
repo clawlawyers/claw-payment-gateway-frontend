@@ -1,6 +1,13 @@
 import React from "react";
 import Imglogo from "../assets/verified.png";
+import { useSelector } from "react-redux";
 const PaymentSuccess = () => {
+  const userDetails = useSelector((state) => state?.auth?.plan);
+  const clickHandler = () => {
+    if (userDetails?.homeSite) {
+      window.location.href = userDetails.homeSite;
+    }
+  };
   return (
     <div className=" flex justify-center items-center ">
       <div className="w-full max-w-3xl bg-[#0f4444] rounded-lg  text-white text-center">
@@ -14,7 +21,10 @@ const PaymentSuccess = () => {
             completing the purchase.
             <br />
             You will be soon redirected to the{" "}
-            <span className="font-bold text-white">Home Page</span>.
+            <span className="font-bold text-white">
+              <button onClick={clickHandler}>Home Page </button>
+            </span>
+            .
           </p>
         </div>
       </div>
