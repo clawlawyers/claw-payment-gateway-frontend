@@ -54,6 +54,8 @@ const PaymentConfirmation = () => {
           userDetails?.createPaymentPayload
         );
 
+        console.log("Payment created");
+
         const { id, currency } = result?.data?.razorpayOrder;
         let _id =
           userDetails?.createPaymentPayload?.planName !== "Talk to Expert"
@@ -77,9 +79,19 @@ const PaymentConfirmation = () => {
               _id,
               ...userDetails?.verifyPaymentPayload,
             };
+            console.log("Payment verifed");
             await axios.post(userDetails?.verifyPaymentURL, data);
+            console.log("Payment verifed");
             setLoading(false);
             setStep(3);
+          },
+          // Track when the modal is closed by the user (cancellation)
+          modal: {
+            ondismiss: function () {
+              console.log("Checkout form closed by user");
+              setLoading(false);
+              setStep(4);
+            },
           },
           theme: { color: "#3399cc" },
         };
@@ -132,7 +144,7 @@ const PaymentConfirmation = () => {
             <div className="sm:w-4 w-4 sm:h-4 h-3 bg-green-500 rounded-full"></div>
           </div>
         )}
-       
+
         {step === 4 && (
           <div className="flex items-center justify-center my-4 gap-0 w-full">
             <div className="sm:w-4 w-4 sm:h-4 h-3 bg-green-500 rounded-full"></div>
@@ -144,9 +156,21 @@ const PaymentConfirmation = () => {
         )}
 
         <div className="flex justify-between text-gray-400 text-sm">
-          <span className="text-white sm:ml-8 sm:text-[15px] text-[13px]">Payment Confirmation</span>
-          <span className="text-white sm:text-[15px] text-[13px] mr-[22px]">Processing</span>
-          {step===4?(<span className="text-white sm:text-[15px] text-[13px] mr-[52px]">Payment Failed</span>):(<span className="text-white sm:text-[15px] text-[13px] mr-[28px]">Payment Completed</span>)}
+          <span className="text-white sm:ml-8 sm:text-[15px] text-[13px]">
+            Payment Confirmation
+          </span>
+          <span className="text-white sm:text-[15px] text-[13px] mr-[22px]">
+            Processing
+          </span>
+          {step === 4 ? (
+            <span className="text-white sm:text-[15px] text-[13px] mr-[52px]">
+              Payment Failed
+            </span>
+          ) : (
+            <span className="text-white sm:text-[15px] text-[13px] mr-[28px]">
+              Payment Completed
+            </span>
+          )}
         </div>
         <hr className="text-white w-full  mt-4" />
 
@@ -183,7 +207,8 @@ const PaymentConfirmation = () => {
 
                   <button
                     className="bg-teal-600 hover:bg-teal-700 transition px-4 py-3 mt-4 rounded-md font-medium text-sm w-full"
-                    onClick={loadRazorpay}>
+                    onClick={loadRazorpay}
+                  >
                     Proceed To Payment
                   </button>
                 </div>
@@ -195,7 +220,7 @@ const PaymentConfirmation = () => {
         {step === 2 && <PaymentProcessing />}
 
         {step === 3 && <PaymentSuccess />}
-      
+
         {step === 4 && <PaymentFail />}
       </div>
     </div>
