@@ -10,6 +10,7 @@ import PaymentFail from "./PaymentFail";
 const PaymentConfirmation = () => {
   const [step, setStep] = useState(1);
   const userDetails = useSelector((state) => state?.auth?.plan);
+  console.log(userDetails);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -55,47 +56,93 @@ const PaymentConfirmation = () => {
         );
 
         console.log("Payment created");
+        console.log(result);
+        let id = "";
+        let subscription_id = "";
+        let currency = "";
+        if (userDetails?.createPaymentPayload?.planName === "campaign") {
+          subscription_id = result?.data?.razorpaySubscription?.id;
+        } else {
+          currency = result?.data?.razorpayOrder?.currency;
+          id = result?.data?.razorpayOrder?.id;
+        }
 
-        const { id, currency } = result?.data?.razorpayOrder;
         let _id =
           userDetails?.createPaymentPayload?.planName !== "Talk to Expert"
             ? result?.data?.createdOrder?._id
             : "";
 
-        const options = {
-          key:
-            userDetails?.isLive === "true"
-              ? import.meta.env.VITE_RAZORPAY_LIVE_API_KEY
-              : import.meta.env.VITE_RAZORPAY_TEST_API_KEY,
-          currency: currency,
-          name: "CLAW LEGALTECH PRIVATE LIMITED",
-          description: "Transaction",
-          order_id: id,
-          handler: async function (response) {
-            const data = {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              _id,
-              ...userDetails?.verifyPaymentPayload,
-            };
-            console.log("Payment verifed");
-            await axios.post(userDetails?.verifyPaymentURL, data);
-            console.log("Payment verifed");
-            setLoading(false);
-            setStep(3);
-          },
-          // Track when the modal is closed by the user (cancellation)
-          modal: {
-            ondismiss: function () {
-              console.log("Checkout form closed by user");
-              setLoading(false);
-              setStep(4);
-            },
-          },
-          theme: { color: "#3399cc" },
-        };
+        let options;
+        if (userDetails?.createPaymentPayload?.planName === "campaign") {
+          options = {
+            key:
+              userDetails?.isLive === "true"
+                ? import.meta.env.VITE_RAZORPAY_LIVE_API_KEY
+                : import.meta.env.VITE_RAZORPAY_TEST_API_KEY,
+            subscription_id: subscription_id,
+            name: "CLAW LEGALTECH PRIVATE LIMITED",
+            description: "Subscription",
+            handler: async function (response) {
+              console.log(response);
+              const data = {
+                razorpay_subscription_id: response.razorpay_subscription_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                ...userDetails?.verifyPaymentPayload,
+              };
+              console.log(data);
+              console.log(response);
 
+              await axios.post(userDetails?.verifyPaymentURL, data);
+              console.log("Payment verifed");
+              setLoading(false);
+              setStep(3);
+            },
+            // Track when the modal is closed by the user (cancellation)
+            modal: {
+              ondismiss: function () {
+                console.log("Checkout form closed by user");
+                setLoading(false);
+                setStep(4);
+              },
+            },
+            theme: { color: "#3399cc" },
+          };
+        } else {
+          options = {
+            key:
+              userDetails?.isLive === "true"
+                ? import.meta.env.VITE_RAZORPAY_LIVE_API_KEY
+                : import.meta.env.VITE_RAZORPAY_TEST_API_KEY,
+            currency: currency,
+            name: "CLAW LEGALTECH PRIVATE LIMITED",
+            description: "Transaction",
+            order_id: id,
+            handler: async function (response) {
+              const data = {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                _id,
+                ...userDetails?.verifyPaymentPayload,
+              };
+              console.log("Payment verifed");
+              await axios.post(userDetails?.verifyPaymentURL, data);
+              console.log("Payment verifed");
+              setLoading(false);
+              setStep(3);
+            },
+            // Track when the modal is closed by the user (cancellation)
+            modal: {
+              ondismiss: function () {
+                console.log("Checkout form closed by user");
+                setLoading(false);
+                setStep(4);
+              },
+            },
+            theme: { color: "#3399cc" },
+          };
+        }
         const paymentObject = new window.Razorpay(options);
         paymentObject.open();
       } catch (error) {
@@ -194,7 +241,11 @@ const PaymentConfirmation = () => {
                       </p>
                     </div>
                     <span className="font-semibold text-lg">
-                      ₹ {userDetails?.createPaymentPayload?.amount}
+                      ₹{" "}
+                      {userDetails?.createPaymentPayload?.planName ===
+                      "campaign"
+                        ? "99"
+                        : userDetails?.createPaymentPayload?.amount}
                     </span>
                   </div>
 
@@ -202,13 +253,18 @@ const PaymentConfirmation = () => {
 
                   <div className="flex justify-between text-lg font-semibold">
                     <span>Total Payable:</span>
-                    <span>₹ {userDetails?.createPaymentPayload?.amount}</span>
+                    <span>
+                      ₹{" "}
+                      {userDetails?.createPaymentPayload?.planName ===
+                      "campaign"
+                        ? "99"
+                        : userDetails?.createPaymentPayload?.amount}
+                    </span>
                   </div>
 
                   <button
                     className="bg-teal-600 hover:bg-teal-700 transition px-4 py-3 mt-4 rounded-md font-medium text-sm w-full"
-                    onClick={loadRazorpay}
-                  >
+                    onClick={loadRazorpay}>
                     Proceed To Payment
                   </button>
                 </div>
