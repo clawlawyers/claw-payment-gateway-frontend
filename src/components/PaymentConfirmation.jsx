@@ -6,11 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setPlan } from "../features/gpt/authSlice";
 import PaymentFail from "./PaymentFail";
-
+import { useNavigate } from "react-router-dom";
+import Successfully from "./Successfully";
 const PaymentConfirmation = () => {
   const [step, setStep] = useState(1);
   const userDetails = useSelector((state) => state?.auth?.plan);
   console.log(userDetails);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +22,7 @@ const PaymentConfirmation = () => {
   // console.log(userDetails?.createPaymentURL);
   // console.log(userDetails?.verifyPaymentPayload);
   // console.log(userDetails?.verifyPaymentURL);
-  // console.log(typeof userDetails?.isLive);
+  console.log(userDetails?.isLive);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -96,7 +98,10 @@ const PaymentConfirmation = () => {
               await axios.post(userDetails?.verifyPaymentURL, data);
               console.log("Payment verifed");
               setLoading(false);
-              setStep(3);
+              // setStep(3);
+              navigate(
+                `/success/${userDetails?.isLive}/${userDetails?.createPaymentPayload?.planName}`
+              );
             },
             // Track when the modal is closed by the user (cancellation)
             modal: {
@@ -130,7 +135,10 @@ const PaymentConfirmation = () => {
               await axios.post(userDetails?.verifyPaymentURL, data);
               console.log("Payment verifed");
               setLoading(false);
-              setStep(3);
+              // setStep(3);
+              navigate(
+                `/success/${userDetails?.isLive}/${userDetails?.createPaymentPayload?.planName}`
+              );
             },
             // Track when the modal is closed by the user (cancellation)
             modal: {
@@ -275,7 +283,8 @@ const PaymentConfirmation = () => {
 
         {step === 2 && <PaymentProcessing />}
 
-        {step === 3 && <PaymentSuccess />}
+        {/* {step === 3 && <PaymentSuccess />} */}
+        {step === 3 && <Successfully />}
 
         {step === 4 && <PaymentFail />}
       </div>
