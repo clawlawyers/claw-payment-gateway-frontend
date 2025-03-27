@@ -103,6 +103,12 @@ const PaymentConfirmation = () => {
                 `/success/${userDetails?.isLive}/${userDetails?.createPaymentPayload?.planName}`
               );
             },
+            // prefill: {
+            //   name: currentUser?.name || "test",
+            //   email: currentUser?.email || "courtroompremium@gmail.com",
+            //   contact: currentUser?.phoneNumber,
+            // },
+
             // Track when the modal is closed by the user (cancellation)
             modal: {
               ondismiss: function () {
