@@ -90,6 +90,7 @@ const PaymentConfirmation = () => {
                 razorpay_subscription_id: response.razorpay_subscription_id,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
+                _id,
                 ...userDetails?.verifyPaymentPayload,
               };
               console.log(data);
@@ -289,7 +290,8 @@ const PaymentConfirmation = () => {
 
                   <button
                     className="bg-teal-600 hover:bg-teal-700 transition px-4 py-3 mt-4 rounded-md font-medium text-sm w-full"
-                    onClick={loadRazorpay}>
+                    onClick={loadRazorpay}
+                  >
                     Proceed To Payment
                   </button>
                 </div>
