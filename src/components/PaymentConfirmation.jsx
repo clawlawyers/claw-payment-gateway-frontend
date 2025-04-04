@@ -11,17 +11,17 @@ import Successfully from "./Successfully";
 const PaymentConfirmation = () => {
   const [step, setStep] = useState(1);
   const userDetails = useSelector((state) => state?.auth?.plan);
-  console.log(userDetails);
+  console.log(userDetails?.createPaymentPayload?.currency);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  // console.log(userDetails);
-  // console.log(userDetails?.homeSite);
-  // console.log(userDetails?.createPaymentPayload);
-  // console.log(userDetails?.createPaymentURL);
-  // console.log(userDetails?.verifyPaymentPayload);
-  // console.log(userDetails?.verifyPaymentURL);
+  console.log(userDetails);
+  console.log(userDetails?.homeSite);
+  console.log(userDetails?.createPaymentPayload);
+  console.log(userDetails?.createPaymentURL);
+  console.log(userDetails?.verifyPaymentPayload);
+  console.log(userDetails?.verifyPaymentURL);
   console.log(userDetails?.isLive);
 
   useEffect(() => {
@@ -255,7 +255,13 @@ const PaymentConfirmation = () => {
                       </p>
                     </div>
                     <span className="font-semibold text-lg">
-                      ₹{" "}
+                      {userDetails?.createPaymentPayload?.currency === "INR" &&
+                        "₹ "}
+                      {userDetails?.createPaymentPayload?.currency === "GBP" &&
+                        "£ "}
+                      {userDetails?.createPaymentPayload?.currency === "USD" &&
+                        "$ "}
+                      {/* {plan.price[activePlan?.currencyType]} /- ₹{" "} */}
                       {userDetails?.createPaymentPayload?.planName ===
                       "campaign"
                         ? "99"
@@ -268,7 +274,12 @@ const PaymentConfirmation = () => {
                   <div className="flex justify-between text-lg font-semibold">
                     <span>Total Payable:</span>
                     <span>
-                      ₹{" "}
+                      {userDetails?.createPaymentPayload?.currency === "INR" &&
+                        "₹ "}
+                      {userDetails?.createPaymentPayload?.currency === "GBP" &&
+                        "£ "}
+                      {userDetails?.createPaymentPayload?.currency === "USD" &&
+                        "$ "}
                       {userDetails?.createPaymentPayload?.planName ===
                       "campaign"
                         ? "99"
